@@ -6,14 +6,16 @@
 
 using namespace Object2D;
 
+
+
 pixel Bitmap::setCurrentColor(ColorInterface* color)
 {
-    return pixel();
+    return color->getColor();
 }
 
 int Bitmap::transform_XY_forArrayInx(int x, int y)
 {
-    return 1;
+    return x + width * y;
 }
 
 
@@ -67,13 +69,13 @@ Bitmap::Bitmap(char* p, int w, int h, ColorInterface* color): pixel_color (color
 
 Bitmap::~Bitmap()
 {
-    //delete [] pix;
-    //delete [] pixel_color;
+    delete [] pix;
 }
 
 void Bitmap::putPixel(int x, int y, ColorInterface* color)
 {
-
+    int arrayIndex = transform_XY_forArrayInx(x,y);
+    pix[arrayIndex] = color->getColor();
 }
 
 bool Bitmap::draw()

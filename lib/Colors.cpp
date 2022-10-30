@@ -1,12 +1,18 @@
-#include<iostream>
-#include<fstream>
-#include<math.h>
-#include<cstdlib>
+#include <iostream>
+#include <fstream>
+#include <math.h>
+#include <cstdlib>
 #include "Colors.h"
 
 using namespace Object2D;
 
 // RGB COLORS
+void RGBColor::setColor(float r, float g, float b)
+{
+    float array[] = {r, g, b};
+    setColor(array,3);
+}
+
 void RGBColor::setColor(float * array, size_t arraySize) 
 {
     if(arraySize == 3)
@@ -26,10 +32,17 @@ pixel RGBColor::getColor()
 
     return res;    
 }
+RGBColor::~RGBColor() {}
 
 
 
 // CMYK COLORS
+void CMYKColor::setColor(float c, float m, float y, float k)
+{
+    float array[] = {c, m, y,k};
+    setColor(array, 4);
+}
+
 void CMYKColor::setColor(float * array, size_t arraySize)
 {
     if(arraySize == 4)
@@ -41,6 +54,7 @@ void CMYKColor::setColor(float * array, size_t arraySize)
     }
 }
 
+
 pixel CMYKColor::getColor()
 {
     pixel res;
@@ -50,3 +64,5 @@ pixel CMYKColor::getColor()
 
     return res;    
 }
+
+CMYKColor::~CMYKColor() {}

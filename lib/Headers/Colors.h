@@ -1,4 +1,4 @@
-
+#pragma once
 namespace Object2D{
 
     struct pixel {      //пиксель с тремя составляющими цвета
@@ -13,6 +13,7 @@ namespace Object2D{
     public:
         virtual void setColor(float * array, size_t arraySize) = 0;
         virtual pixel getColor() = 0;
+        virtual ~ColorInterface(){}
     };
 
 
@@ -26,8 +27,10 @@ namespace Object2D{
     public:
         RGBColor(): R(0), G(0), B(0) 
         {   }
+        void setColor(float r, float g, float b);
         void setColor(float * array, size_t arraySize) override;
         pixel getColor() override;
+        ~RGBColor() override;
     };
 
 
@@ -43,8 +46,10 @@ namespace Object2D{
     public:
         CMYKColor():C(0.0),M(0.0),Y(0.0),K(0.0)
         {   }
+
+        void setColor(float c, float m, float y, float k);
         void setColor(float * array, size_t arraySize) override;
         pixel getColor() override;
-       
+        ~CMYKColor() override;
     };
 }
