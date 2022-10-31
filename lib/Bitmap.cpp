@@ -4,6 +4,7 @@
 #include<math.h>
 #include<cstdlib>
 
+
 using namespace Object2D;
 
 
@@ -76,6 +77,18 @@ void Bitmap::putPixel(int x, int y, ColorInterface* color)
 {
     int arrayIndex = transform_XY_forArrayInx(x,y);
     pix[arrayIndex] = color->getColor();
+}
+
+void Bitmap::putPixels(std::pair<int,int>* coords, int size, ColorInterface* color)
+{
+    pixel color_temp = color->getColor();
+    int arrayIndex;
+
+    for(int i = 0; i < size; i++ )
+    {
+        arrayIndex = transform_XY_forArrayInx(coords[i].first, coords[i].second);
+        pix[arrayIndex] = color_temp;
+    }
 }
 
 bool Bitmap::draw()

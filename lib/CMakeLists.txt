@@ -11,6 +11,10 @@ add_library(${PROJECT_NAME}
         Headers/Bitmap.h
         Colors.cpp
         Headers/Colors.h
+        UserInterface.cpp
+        Headers/UserInterface.h
+        Matrix.cpp
+        Headers/Matrix.h
         )
 
 target_include_directories(${PROJECT_NAME} PUBLIC Headers)

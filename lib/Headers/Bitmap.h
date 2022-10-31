@@ -1,6 +1,6 @@
 #pragma once
 #include "Colors.h"
-
+#include <map>
 
 namespace Object2D{
     
@@ -9,6 +9,7 @@ namespace Object2D{
         virtual int transform_XY_forArrayInx(int x, int y) = 0;
         virtual bool draw() = 0;
         virtual void putPixel(int x, int y, ColorInterface* color) = 0;
+        virtual void putPixels(std::pair<int,int>* coords, int size, ColorInterface* color) = 0;
     };
 
 
@@ -48,7 +49,9 @@ namespace Object2D{
     public:
         Bitmap(char* p, int width, int height, ColorInterface* color) ;  
         ~Bitmap();
+        
         bool draw() override;                                            // create picture
         void putPixel(int x, int y, ColorInterface* color) override;     // set pixel color 
+        void putPixels(std::pair<int,int>* coords, int size, ColorInterface* color) override;
     };
 }

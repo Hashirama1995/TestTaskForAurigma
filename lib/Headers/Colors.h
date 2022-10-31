@@ -25,8 +25,9 @@ namespace Object2D{
         unsigned char G;
         unsigned char B;
     public:
-        RGBColor(): R(0), G(0), B(0) 
-        {   }
+        RGBColor(): R(0), G(0), B(0) {}
+        RGBColor(int r, int g, int b): R(r), G(g), B(b) {}
+
         void setColor(float r, float g, float b);
         void setColor(float * array, size_t arraySize) override;
         pixel getColor() override;
@@ -44,9 +45,9 @@ namespace Object2D{
         double K;
 
     public:
-        CMYKColor():C(0.0),M(0.0),Y(0.0),K(0.0)
-        {   }
-
+        CMYKColor():C(0.0),M(0.0),Y(0.0),K(0.0){}
+        CMYKColor(float c, float m, float y, float k):C(c),M(m),Y(y),K(k){}
+        
         void setColor(float c, float m, float y, float k);
         void setColor(float * array, size_t arraySize) override;
         pixel getColor() override;
