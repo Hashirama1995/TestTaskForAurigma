@@ -18,11 +18,11 @@ int main()
     //map_bitmaps.emplace("boba",bmp);
     
    // Object2D::ContainerFigure2D cont_inner;
-    //Object2D::ContainerFigure2D cont;
+    Object2D::ContainerFigure2D cont;
 
 
 
-    //cont.add(new Object2D::Line(bmp,200,200,400,450,new Object2D::RGBColor(255,255,255)));
+    cont.add(new Object2D::Line(bmp,200,200,400,450,new Object2D::RGBColor(255,255,255)));
 
     //Object2D::Line testObj(bmp,200,200,400,450, new Object2D::RGBColor(255,255,255));
 
@@ -42,7 +42,7 @@ int main()
 
     cont.add(&cont_inner);*/
     
-    //cont.rasterization();
+    cont.rasterization();
     //cont.create();
     /*
     color.setColor(215,214,215);
