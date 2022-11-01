@@ -11,8 +11,10 @@ int main()
     Object2D::RGBColor color; 
     Object2D::Bitmap bmp("boba",1024,1024, &color);
 
-    Object2D::Point2D point (1,1);
-    Object2D::Point2D point2 (100,100);
+    Object2D::Point2D point (600,400);
+    Object2D::Point2D point2 (400,650);
+    Object2D::Point2D point3 (450,800);
+    Object2D::Point2D point4 (100,120);
 
     
     //map_bitmaps.emplace("boba",bmp);
@@ -22,7 +24,8 @@ int main()
 
 
 
-    cont.add(new Object2D::Line(bmp,200,200,400,450,new Object2D::RGBColor(255,255,255)));
+    //cont.add(new Object2D::Line(bmp,200,200,400,450,new Object2D::RGBColor(255,255,255)));
+    cont.add(new Object2D::BezierBurve3(bmp,point,point2,point3, point4, 3, new Object2D::RGBColor(255,255,255)));
 
     //Object2D::Line testObj(bmp,200,200,400,450, new Object2D::RGBColor(255,255,255));
 
