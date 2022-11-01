@@ -11,20 +11,24 @@ int main()
     Object2D::RGBColor color; 
     Object2D::Bitmap bmp("boba",1024,1024, &color);
 
+    Object2D::Point2D point (1,1);
+    Object2D::Point2D point2 (100,100);
+
+    
     //map_bitmaps.emplace("boba",bmp);
     
    // Object2D::ContainerFigure2D cont_inner;
-    Object2D::ContainerFigure2D cont;
+    //Object2D::ContainerFigure2D cont;
 
 
 
-    cont.add(new Object2D::Line(bmp,200,200,400,450,new Object2D::RGBColor(255,255,255)));
+    //cont.add(new Object2D::Line(bmp,200,200,400,450,new Object2D::RGBColor(255,255,255)));
 
-    Object2D::Line testObj(bmp,200,200,400,450, new Object2D::RGBColor(255,255,255));
+    //Object2D::Line testObj(bmp,200,200,400,450, new Object2D::RGBColor(255,255,255));
 
-    testObj.rotate(60);
+    //testObj.rotate(60);
     
-    cont.add(&testObj);
+    //cont.add(&testObj);
     /*
     for(int i = 0; i < 50; i++)
     {
@@ -38,8 +42,8 @@ int main()
 
     cont.add(&cont_inner);*/
     
-    cont.rasterization();
-    cont.create();
+    //cont.rasterization();
+    //cont.create();
     /*
     color.setColor(215,214,215);
 
