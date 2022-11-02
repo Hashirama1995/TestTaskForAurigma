@@ -125,3 +125,9 @@ bool Bitmap::draw()
 
     return true;
 }
+
+std::pair<unsigned int,unsigned int> Bitmap::getPictureSize()
+{
+    std::pair<unsigned int,unsigned int> result(width, height) ;//= std::make_pair(width, height);
+    return result;
+}

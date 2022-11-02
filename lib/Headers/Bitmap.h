@@ -53,5 +53,6 @@ namespace Object2D{
         bool draw() override;                                            // create picture
         void putPixel(int x, int y, ColorInterface* color) override;     // set pixel color 
         void putPixels(std::pair<int,int>* coords, int size, ColorInterface* color) override;
+        std::pair<unsigned int,unsigned int> getPictureSize();
     };
 }

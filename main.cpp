@@ -11,10 +11,11 @@ int main()
     Object2D::RGBColor color; 
     Object2D::Bitmap bmp("boba",1024,1024, &color);
 
-    Object2D::Point2D point (600,400);
-    Object2D::Point2D point2 (400,650);
-    Object2D::Point2D point3 (450,800);
-    Object2D::Point2D point4 (100,120);
+    Object2D::Point2D point (100,150);
+    Object2D::Point2D point2 (200,800);
+    Object2D::Point2D point3 (300,500);
+    Object2D::Point2D point4 (200,100);
+
 
     
     //map_bitmaps.emplace("boba",bmp);
@@ -22,11 +23,25 @@ int main()
    // Object2D::ContainerFigure2D cont_inner;
     Object2D::ContainerFigure2D cont;
 
+    Object2D::Ellipse ellips(bmp, 500.0, 200.0, 100, 200, 360+180, new Object2D::RGBColor(255,255,255));
 
+    cont.add(&ellips);
 
-    //cont.add(new Object2D::Line(bmp,200,200,400,450,new Object2D::RGBColor(255,255,255)));
+    Object2D::BezierBurve3 burve (bmp,point,point2,point3, point4, 3, new Object2D::RGBColor(255,255,255));
+
+    cont.add(new Object2D::Line(bmp,200,200,400,450,new Object2D::RGBColor(255,255,255)));
     cont.add(new Object2D::BezierBurve3(bmp,point,point2,point3, point4, 3, new Object2D::RGBColor(255,255,255)));
 
+    int xmin = 9999;
+    int ymin = 9999;
+    int xmax = -1;
+    int ymax = -1;
+
+    cont.getEdges(xmin, ymin, xmax, ymax);
+
+    std::cout<<std::endl<<std::endl<<std::endl<<std::endl;
+    std::cout<<"x_min: "<< xmin<<" y_min: "<< ymin<<std::endl;
+    std::cout<<"x_max: "<< xmax<<" y_max: "<< ymax<<std::endl;
     //Object2D::Line testObj(bmp,200,200,400,450, new Object2D::RGBColor(255,255,255));
 
     //testObj.rotate(60);
