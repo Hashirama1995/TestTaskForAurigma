@@ -23,7 +23,9 @@ int main()
    // Object2D::ContainerFigure2D cont_inner;
     Object2D::ContainerFigure2D cont;
 
-    Object2D::Ellipse ellips(bmp, 500.0, 200.0, 100, 200, 360+180, new Object2D::RGBColor(255,255,255));
+    Object2D::Ellipse ellips(bmp, 500.0, 200.0, 100, 200, 360+180, new Object2D::CMYKColor(123,231,123,123));
+
+    //Object2D::Ellipse ellips(bmp, 500.0, 200.0, 100, 200, 360+180, new Object2D::RGBColor(255,255,255));
 
     cont.add(&ellips);
 
