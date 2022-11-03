@@ -1,82 +1,46 @@
-#include "Figure.h"
-#include "Bitmap.h"
-#include "Figure.h"
 #include <iostream>
-#include <unordered_map>
+#include "UserInterface.h"
+
+
+using namespace Object2D;
 
 int main()
 {
-    //std::unordered_map<std::string, Object2D::Bitmap> map_bitmaps;
+    ColorInterface* color = new RGBColor(100,100,100);
 
-    Object2D::RGBColor color; 
-    Object2D::Bitmap bmp("boba",1024,1024, &color);
+    Builder builder;
+    builder.createFile("simba",1024,1024, COLORS::RGB);
+    //std::shared_ptr<Point> point =      builder.createPoint(100,100, new RGBColor(100,100,100));
+    //std::shared_ptr<Line> line =        builder.createLine(200,200,400,400, new RGBColor(123,255,23));
+    //std::shared_ptr<BezierBurve3> burve = builder.createBezierBurve3(Point2D(250,250), Point2D(500,500),Point2D(800,800), Point2D(250,200),3, new RGBColor(255,2,123));
+    //std::shared_ptr<Ellipse> ellipse =  builder.createEllipse(300,300,200,300,360,new RGBColor(123,2,11));
+    std::shared_ptr<Point> point =      builder.createPoint(100,100, color);
+    color->setColor(123,255,23);
+    std::shared_ptr<Line> line =        builder.createLine(200,200,400,400, color);
+    color->setColor(255,2,123);
+    std::shared_ptr<BezierBurve3> burve = builder.createBezierBurve3(Point2D(250,250), Point2D(500,500),Point2D(800,800), Point2D(250,200),3, color);
+    color->setColor(123,2,11);
+    std::shared_ptr<Ellipse> ellipse =  builder.createEllipse(300,300,200,300,360,color);
 
-    Object2D::Point2D point (100,150);
-    Object2D::Point2D point2 (200,800);
-    Object2D::Point2D point3 (300,500);
-    Object2D::Point2D point4 (200,100);
+    ContainerFigure2D container =       builder.createContainer();
 
+    container.add(point);
+    container.add(line);
+    container.add(burve);
+    container.add(ellipse);
 
+    ContainerFigure2D container2 = builder.createContainer();
+    color->setColor(0,0,123);
+    std::shared_ptr<BezierBurve3> burve2 = builder.createBezierBurve3(Point2D(40,250), Point2D(500,500),Point2D(800,600), Point2D(800,200),3, color);
+    container2.add(burve2);
+
+    container.add(&container2);
+    container.rasterization();
     
-    //map_bitmaps.emplace("boba",bmp);
-    
-   // Object2D::ContainerFigure2D cont_inner;
-    Object2D::ContainerFigure2D cont;
 
-    Object2D::Ellipse ellips(bmp, 500.0, 200.0, 100, 200, 360+180, new Object2D::CMYKColor(123,231,123,123));
-
-    //Object2D::Ellipse ellips(bmp, 500.0, 200.0, 100, 200, 360+180, new Object2D::RGBColor(255,255,255));
-
-    cont.add(&ellips);
-
-    Object2D::BezierBurve3 burve (bmp,point,point2,point3, point4, 3, new Object2D::RGBColor(255,255,255));
-
-    cont.add(new Object2D::Line(bmp,200,200,400,450,new Object2D::RGBColor(255,255,255)));
-    cont.add(new Object2D::BezierBurve3(bmp,point,point2,point3, point4, 3, new Object2D::RGBColor(255,255,255)));
-
-    int xmin = 9999;
-    int ymin = 9999;
-    int xmax = -1;
-    int ymax = -1;
-
-    cont.getEdges(xmin, ymin, xmax, ymax);
-
-    std::cout<<std::endl<<std::endl<<std::endl<<std::endl;
-    std::cout<<"x_min: "<< xmin<<" y_min: "<< ymin<<std::endl;
-    std::cout<<"x_max: "<< xmax<<" y_max: "<< ymax<<std::endl;
-    //Object2D::Line testObj(bmp,200,200,400,450, new Object2D::RGBColor(255,255,255));
-
-    //testObj.rotate(60);
-    
-    //cont.add(&testObj);
-    /*
-    for(int i = 0; i < 50; i++)
+    if(builder.drawImage())
     {
-        cont_inner.add(new Object2D::Point(bmp, 255 ,500+i ,new Object2D::RGBColor(215, 200, 114)   ) );
+        std::cout<<"NICE!"<<std::endl;
     }
-
-    for(int i = 0; i < 35; i++)
-    {
-        cont.add(new Object2D::Point(bmp ,255+i ,500 ,new Object2D::RGBColor(112,0,22)  ) );
-    }
-
-    cont.add(&cont_inner);*/
-    
-    cont.rasterization();
-    //cont.create();
-    /*
-    color.setColor(215,214,215);
-
-    for(int i =0; i<600; i++)
-    {
-        bmp.putPixel(2+i, 100 + i, &color);
-    }
-    */
-
-
-    if(!bmp.draw())
-        std::cout<<"BAD";
-        
-    std::cout<<"ready";
-    return 1;
+    return 0;
 }

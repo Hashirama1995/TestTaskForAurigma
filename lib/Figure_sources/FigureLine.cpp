@@ -5,7 +5,7 @@ using namespace Object2D;
 /*********_Implementation Line_*********/
 
 Line::Line(Bitmap& pic, int x1_, int y1_, int x2_, int y2_, ColorInterface* clr)
-                            :picture(pic), x1(x1_), y1(y1_), x2(x2_), y2(y2_), color(clr)
+                            :picture(pic), x1(x1_), y1(y1_), x2(x2_), y2(y2_), color(clr), current_color(clr->getColor())
 {
     std::pair<unsigned int, unsigned int>sizePic = picture.getPictureSize();
     validatePoint(x1, y1, sizePic.first, sizePic.second);
@@ -13,7 +13,7 @@ Line::Line(Bitmap& pic, int x1_, int y1_, int x2_, int y2_, ColorInterface* clr)
 }
 
 Line::Line(Bitmap& pic, Point2D p0, Point2D p1, ColorInterface* clr)
-                            :picture(pic), x1(p0.x), y1(p0.y), x2(p1.x), y2(p1.y), color(clr)
+                            :picture(pic), x1(p0.x), y1(p0.y), x2(p1.x), y2(p1.y), color(clr), current_color(clr->getColor())
 {
     std::pair<unsigned int, unsigned int>sizePic = picture.getPictureSize();
     validatePoint(x1, y1, sizePic.first, sizePic.second);
@@ -22,13 +22,13 @@ Line::Line(Bitmap& pic, Point2D p0, Point2D p1, ColorInterface* clr)
 
 Line::~Line()
 {   
-    if(color)
-        delete color;   // ЕСТЬ ПРОБЛЕМА!
+    //delete color;
+    std::cout<<"delete Line"<<std::endl;     
 } 
 
 void Line::setColor(ColorInterface* color)
 {
-
+    current_color = color->getColor();
 }
 
 
@@ -41,7 +41,8 @@ void Line::rasterization()
 
 void Line::putPixel(int x, int y)
 {
-    picture.putPixel(x,y,color);
+    //picture.putPixel(x,y,color); 
+    picture.putPixel(x,y,current_color);
 }
 
 void Line::affineMatrixMultiply(float matrix_[3][3])
@@ -86,30 +87,48 @@ void Line::shift(float dx, float dy)
 
 void Line::zoom(float Sx, float Sy)
 {
-    // TODO - проверка на корректность Sx, Sy
+    const float tempMatrix[3][3] = {{abs(Sx), 0, 0},{0, abs(Sy), 0},{0, 0, 1}};
 
-    float tempMatrix[3][3] = {{Sx,0,0},{0,Sy,0},{0,0,1}};
+    int tempX1 = x1, tempY1 = y1, tempX2 = x2, tempY2 = y2;
 
-    std::cout<< x1 << "-" << y1<< " and "<< x2 << "-" << y2;
     matrixMultiply(x1,y1,tempMatrix);
     matrixMultiply(x2,y2,tempMatrix);
-    std::cout<<" transform to :" << x1<< "-" << y1 << " and "<< x2 << "-" << y2 << std::endl;
+
+    std::pair<unsigned int, unsigned int>sizePic = picture.getPictureSize();
+    int x_min = 9999999, y_min = 9999999, x_max = -1, y_max = -1;
+    getEdges(x_min, y_min, x_max, y_max);
+
+    if (x_min < 0 || y_min < 0 || x_max > sizePic.first || y_max > sizePic.second)
+    {
+        x1 = tempX1; y1 = tempY1; x2 = tempX2; y2 = tempY2;
+        std::cout<< "Object Line: was not zoomed. Мultiplier is too high" <<std::endl;
+    }
 }
 
 void Line::rotate(float Fi) 
 {   
-    // Беда
-    // НЕ РАБОТАЕТ!!!
+    float radian = Fi/180.0f * M_PI;         
+    float sinF = sin(radian);
+    float cosF = cos(radian);
+    float DX = abs(x2+x1)/2 ;
+    float DY = abs(y2+y1)/2 ;
 
-    /*
-    Fi = Fi * M_PI/180;         
-    float sinF = sin(Fi);
-    float cosF = cos(Fi);
+   std::cout<<"DX = " <<DX <<"  DY = " <<DY << std::endl;
 
-    float tempMatrix[3][3] = {{cosF, sinF, 0}, {-sinF, cosF ,0}, {0, 0, 1}};
+    int resX1 = x1 - DX;
+    int resY1 = y1 - DY;
+    int resX2 = x2 - DX;
+    int resY2 = y2 - DY;
 
-    std::cout<< x1 << "-" << y1<< " and "<< x2 << "-" << y2;
-    affineMatrixMultiply(tempMatrix);
+    float tempMatrix[3][3] = {{cosF, sinF, 0}, {-sinF, cosF ,0}, {DX, DY, 1}};
+
+    std::cout<< resX1 << "-" << resY1<< " and "<< resX2 << "-" << resY2;
+
+    matrixMultiply(resX1,resY1,tempMatrix);
+    matrixMultiply(resX2,resY2,tempMatrix);
+
+    x1 = resX1; y1 = resY1; x2 = resX2; y2 = resY2;
+
     std::cout<<" transform to :" << x1<< "-" << y1 << " and "<< x2 << "-" << y2 << std::endl;
-    */
+    
 }

@@ -11,6 +11,7 @@
 #include "Colors.h"
 #include "Bitmap.h"
 
+
 #define M_PI 3.14159265358979323846  /* pi */
 
 namespace Object2D{
@@ -53,6 +54,7 @@ namespace Object2D{
 
         void rasterization() override;
         Figure2D* add(Figure2D* item);
+        Figure2D* add(std::shared_ptr<Figure2D> item);
         
         void getEdges(int& x_min, int& y_min, int& x_max, int& y_max) override;
 
@@ -65,7 +67,7 @@ namespace Object2D{
 
 
 
-    /*********_2D Figure interface_*********/ 
+    /*********_2D Figure abstract class_*********/ 
     class FigureObject2D: public Figure2D
     {
     public: // pure virtual
@@ -84,6 +86,7 @@ namespace Object2D{
         virtual ~FigureObject2D() {}
         virtual void matrixMultiply(int& x, int& y, const float matrix[3][3]);
         virtual void matrixMultiply(Point2D& point, const float matrix[3][3]);
+        virtual void matrixMultiply(float& x, float& y, const float matrix[3][3]);
         virtual void calculateBresenthemCoords(int x1, int y1, int x2, int y2);
 
         virtual void validatePoint(float& x, float& y, const unsigned int sizeX, const unsigned int sizeY);
@@ -101,6 +104,7 @@ namespace Object2D{
         ColorInterface* color = nullptr;
         int posX = 0;
         int posY = 0;
+        pixel current_color;
     
     private:
         void putPixel(int x, int y) override;
@@ -115,7 +119,7 @@ namespace Object2D{
         
         void shift(float dx, float dy) override;
 
-        void zoom(float Sx, float Sy) override; // not implemented
+        void zoom(float Sx, float Sy) override;
         void rotate(float Fi) override;         // not implemented
     };
 
@@ -130,6 +134,7 @@ namespace Object2D{
         int y1 = 0;
         int x2 = 0;
         int y2 = 0;
+        pixel current_color;
 
     private:
         void affineMatrixMultiply(float matrix_[3][3]);
@@ -145,8 +150,9 @@ namespace Object2D{
         void rasterization() override;
 
         void shift(float dx, float dy) override;
+
         void zoom(float Sx, float Sy) override;
-        void rotate(float Fi) override; // НЕ РАБОТАЕТ
+        void rotate(float Fi) override;             // not implemented
     };
 
     
@@ -163,7 +169,8 @@ namespace Object2D{
         Point2D P2;
         Point2D P3;
         int precision = 1;
-        
+        pixel current_color;
+
         int PointCoordsSize = 0;
         std::pair<int,int>* PointCoords = nullptr;
 
@@ -174,12 +181,15 @@ namespace Object2D{
 
     public:
         BezierBurve3(Bitmap& pic, Point2D p0, Point2D p1, Point2D p2, Point2D p3, int precision, ColorInterface * clr);
+        ~BezierBurve3() override;
+
         void setColor(ColorInterface* color) override;
         void rasterization() override;
         
         void shift(float dx, float dy) override;
+
         void zoom(float Sx, float Sy) override;
-        void rotate(float Fi) override;
+        void rotate(float Fi) override;             // not implemented
 
         void getEdges(int& x_min, int& y_min, int& x_max, int& y_max) override;
     };
@@ -195,19 +205,23 @@ namespace Object2D{
         float rx;
         float ry;
         int num_segments;
-    
+        float rotationAngle= 0;
+        pixel current_color;
+        
     private:
         void putPixel(int x, int y) override;
 
     public:
         Ellipse(Bitmap& pic, float x_, float y_, float rx_, float ry_, int numSegm, ColorInterface * clr);
+        ~Ellipse() override;
 
         void setColor(ColorInterface* color) override;
         void rasterization() override;
 
         void shift(float dx, float dy) override;
+
         void zoom(float Sx, float Sy) override;
-        void rotate(float Fi) override;
+        void rotate(float Fi) override;             // not implemented
 
         void getEdges(int& x_min, int& y_min, int& x_max, int& y_max) override;
     };

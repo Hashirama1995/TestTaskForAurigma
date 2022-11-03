@@ -9,6 +9,7 @@ namespace Object2D{
         virtual int transform_XY_forArrayInx(int x, int y) = 0;
         virtual bool draw() = 0;
         virtual void putPixel(int x, int y, ColorInterface* color) = 0;
+        virtual void putPixel(int x, int y, pixel color) = 0;
         virtual void putPixels(std::pair<int,int>* coords, int size, ColorInterface* color) = 0;
     };
 
@@ -35,7 +36,7 @@ namespace Object2D{
         unsigned int used_color;                //кол-во используемых цветов
         unsigned int main_color;                //кол-во важных цветов
 
-        pixel *pix;
+        pixel *pix = nullptr;
         ColorInterface* pixel_color = nullptr;
 
         unsigned int img_size;                  //image size
@@ -43,16 +44,16 @@ namespace Object2D{
 
     private:
         pixel setCurrentColor(ColorInterface* color) override;
-        int transform_XY_forArrayInx(int x, int y) override;
-
 
     public:
         Bitmap(char* p, int width, int height, ColorInterface* color) ;  
         ~Bitmap();
         
         bool draw() override;                                            // create picture
-        void putPixel(int x, int y, ColorInterface* color) override;     // set pixel color 
+        void putPixel(int x, int y, ColorInterface* color) override;     // set pixel color
+        void putPixel(int x, int y, pixel color) override; 
         void putPixels(std::pair<int,int>* coords, int size, ColorInterface* color) override;
+        int transform_XY_forArrayInx(int x, int y) override;
         std::pair<unsigned int,unsigned int> getPictureSize();
     };
 }

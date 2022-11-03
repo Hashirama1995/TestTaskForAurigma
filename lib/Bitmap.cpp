@@ -70,13 +70,21 @@ Bitmap::Bitmap(char* p, int w, int h, ColorInterface* color): pixel_color (color
 
 Bitmap::~Bitmap()
 {
+    std::cout<<"delete Bitmap"<<std::endl;
     delete [] pix;
+    delete pixel_color;
 }
 
 void Bitmap::putPixel(int x, int y, ColorInterface* color)
 {
     int arrayIndex = transform_XY_forArrayInx(x,y);
     pix[arrayIndex] = color->getColor();
+}
+
+void Bitmap::putPixel(int x, int y, pixel color)
+{
+    int arrayIndex = transform_XY_forArrayInx(x,y);
+    pix[arrayIndex] = color;
 }
 
 void Bitmap::putPixels(std::pair<int,int>* coords, int size, ColorInterface* color)

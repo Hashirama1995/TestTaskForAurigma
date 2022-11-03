@@ -42,6 +42,8 @@ add_subdirectory(lib)
 
 add_subdirectory(tests)
 
+add_subdirectory(example)
+
 add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC testTask-lib)

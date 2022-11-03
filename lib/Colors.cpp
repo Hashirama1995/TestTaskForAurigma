@@ -7,12 +7,15 @@
 using namespace Object2D;
 
 // RGB COLORS
-void RGBColor::setColor(float r, float g, float b)
+void RGBColor::setColor(float r, float g, float b, float a)
 {
-    float array[] = {r, g, b};
-    setColor(array,3);
+    R = static_cast<unsigned char>(r);
+    B = static_cast<unsigned char>(g);
+    G = static_cast<unsigned char>(b);
+    //float array[] = {r, g, b};
+    //setColor(array,3);
 }
-
+/*
 void RGBColor::setColor(float * array, size_t arraySize) 
 {
     if(arraySize == 3)
@@ -21,7 +24,7 @@ void RGBColor::setColor(float * array, size_t arraySize)
         B = static_cast<unsigned char>(array[1]);
         G = static_cast<unsigned char>(array[2]);
     }
-}
+}*/
 
 pixel RGBColor::getColor()
 {
@@ -32,17 +35,24 @@ pixel RGBColor::getColor()
 
     return res;    
 }
-RGBColor::~RGBColor() {}
+RGBColor::~RGBColor() {
+    std::cout<<"delete RGB color"<<std::endl;
+}
 
 
 
 // CMYK COLORS
 void CMYKColor::setColor(float c, float m, float y, float k)
 {
-    float array[] = {c, m, y,k};
-    setColor(array, 4);
+    C = static_cast<double>(c);
+    M = static_cast<double>(m);
+    Y = static_cast<double>(y);
+    K = static_cast<double>(k);
+    //float array[] = {c, m, y,k};
+    //setColor(array, 4);
 }
 
+/*
 void CMYKColor::setColor(float * array, size_t arraySize)
 {
     if(arraySize == 4)
@@ -52,7 +62,7 @@ void CMYKColor::setColor(float * array, size_t arraySize)
        Y = static_cast<double>(array[2]);
        K = static_cast<double>(array[3]);
     }
-}
+}*/
 
 
 pixel CMYKColor::getColor()

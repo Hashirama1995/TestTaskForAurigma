@@ -4,34 +4,35 @@ using namespace Object2D;
 /*********_Implementation Point_*********/
 
 Point::Point(Bitmap& pic, int x, int y, ColorInterface* clr)
-                            :picture(pic), posX(x), posY(y), color(clr)
+                            :picture(pic), posX(x), posY(y), color(clr),current_color(clr->getColor())
 {
+    //delete color;
     std::pair<unsigned int, unsigned int>sizePic = picture.getPictureSize();
     validatePoint(posX, posY, sizePic.first, sizePic.second);
 }
 
 Point::~Point()
 {
-    delete color;
-    std::cout<<"delete color"<<std::endl;
+    
+    //delete color;
+    std::cout<<"delete Point"<<std::endl;
 }
 
 void Point::setColor(ColorInterface* color)
 {
-
+    current_color = color->getColor();
 }
 
 void Point::rasterization()
 {
-    // TODO - for what????
-    std::cout<<"create point: "<< posX << "-" << posY <<std::endl;
-    
+    putPixel(posX, posY);    
 }
 
 
 void Point::putPixel(int x, int y)
 {
-    picture.putPixel(posX, posY, color);
+    //picture.putPixel(posX, posY, color);
+    picture.putPixel(posX, posY, current_color);
 }
 
 void Point::shift(float dx, float dy)

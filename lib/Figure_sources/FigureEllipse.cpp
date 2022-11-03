@@ -5,7 +5,7 @@ using namespace Object2D;
 /*********_Implementation Ellipse*********/
 
 Ellipse::Ellipse(Bitmap& pic, float x_, float y_, float rx_, float ry_, int numSegm, ColorInterface* clr)
-    :picture(pic), xCenter(x_), yCenter(y_), rx(rx_), ry(ry_), num_segments(numSegm), color(clr)
+    :picture(pic), xCenter(x_), yCenter(y_), rx(rx_), ry(ry_), num_segments(numSegm), color(clr), current_color(clr->getColor())
 {
     std::pair<unsigned int, unsigned int>sizePic = picture.getPictureSize();
 
@@ -38,10 +38,16 @@ Ellipse::Ellipse(Bitmap& pic, float x_, float y_, float rx_, float ry_, int numS
 
 }
 
-
-void Ellipse::setColor(ColorInterface* color)
+Ellipse::~Ellipse()
 {
-    
+    //delete color;
+    std::cout<<"delete Ellipse"<<std::endl;
+}
+
+void Ellipse::setColor(ColorInterface* color_)
+{
+    //color = color_;    
+    current_color = color_->getColor() ;
 }
 
 void Ellipse::rasterization()
@@ -55,6 +61,24 @@ void Ellipse::rasterization()
         Point2D temp(rx * cosf(angle), ry * sinf(angle));
         list.push_back(temp);
     }
+    if(rotationAngle != 0)
+    {
+        float sinF = sin(rotationAngle/180 * M_PI);
+        float cosF = cos(rotationAngle/180 * M_PI);
+        float DX = 0;
+        float DY = 0;
+        float tempMatrix[3][3] = {{cosF, sinF, 0}, {-sinF, cosF ,0}, {DX, DY, 1}};
+        float resX, resY;
+
+        for(std::list<Point2D>::iterator first = list.begin();  first != list.end(); ++first)
+        {
+            resX = first->x - DX;
+            resY = first->y - DY;
+            matrixMultiply(resX, resY, tempMatrix);
+            first->x = resX;
+            first->y = resY;
+        }
+    }
 
     std::list<Point2D>::iterator second = list.begin();
     ++second;
@@ -67,7 +91,8 @@ void Ellipse::rasterization()
 
 void Ellipse::putPixel(int x, int y)
 {
-    picture.putPixel(x,y,color);
+    //picture.putPixel(x,y,color); current_color
+    picture.putPixel(x,y,current_color); 
 }
 
 
@@ -82,14 +107,19 @@ void Ellipse::shift(float dx, float dy)
 
 void Ellipse::zoom(float Sx, float Sy)
 {
-    const float tempMatrix[3][3] = {{Sx,0,0},{0,Sy,0},{0,0,1}};
-    
-    matrixMultiply(xCenter, yCenter, tempMatrix);
+    const float tempMatrix[3][3] = {{abs(Sx), 0, 0},{0, abs(Sy), 0},{0, 0, 1}};
+    std::pair<unsigned int, unsigned int>sizePic = picture.getPictureSize();
+    if(rx * Sx > sizePic.first && ry * Sy > sizePic.second)
+    {
+        std::cout<< "Object Ellipse: was not zoomed. Мultiplier is too high" <<std::endl;
+    }
+
+    matrixMultiply(rx, ry, tempMatrix);
 }
 
 void Ellipse::rotate(float Fi)
 {
-    // dont work
+    rotationAngle = Fi;
 }
 
 void Ellipse::getEdges(int& x_min, int& y_min, int& x_max, int& y_max)

@@ -1,6 +1,11 @@
 #pragma once
 namespace Object2D{
 
+    enum class COLORS{
+        RGB,
+        CMYK
+    };
+
     struct pixel {      //пиксель с тремя составляющими цвета
         unsigned char b = 0;
         unsigned char g = 0;
@@ -11,7 +16,8 @@ namespace Object2D{
     class ColorInterface
     {
     public:
-        virtual void setColor(float * array, size_t arraySize) = 0;
+        //virtual void setColor(float * array, size_t arraySize) = 0;
+        virtual void setColor(float r, float g, float b, float a = 0) = 0;
         virtual pixel getColor() = 0;
         virtual ~ColorInterface(){}
     };
@@ -28,8 +34,8 @@ namespace Object2D{
         RGBColor(): R(0), G(0), B(0) {}
         RGBColor(int r, int g, int b): R(r), G(g), B(b) {}
 
-        void setColor(float r, float g, float b);
-        void setColor(float * array, size_t arraySize) override;
+        void setColor(float r, float g, float b, float a = 0);
+        //void setColor(float * array, size_t arraySize) override;
         pixel getColor() override;
         ~RGBColor() override;
     };
@@ -49,7 +55,7 @@ namespace Object2D{
         CMYKColor(float c, float m, float y, float k):C(c),M(m),Y(y),K(k){}
         
         void setColor(float c, float m, float y, float k);
-        void setColor(float * array, size_t arraySize) override;
+        //void setColor(float * array, size_t arraySize) override;
         pixel getColor() override;
         ~CMYKColor() override;
     };

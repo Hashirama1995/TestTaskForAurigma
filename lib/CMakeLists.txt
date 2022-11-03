@@ -13,15 +13,15 @@ add_library(${PROJECT_NAME}
         Headers/Colors.h
         UserInterface.cpp
         Headers/UserInterface.h
-        Matrix.cpp
-        Headers/Matrix.h
         Figure_sources/FigureContainer.cpp
         Figure_sources/FigurePoint.cpp
         Figure_sources/FigureLine.cpp
         Figure_sources/FigureBezierBurve3.cpp
         Figure_sources/FigureEllipse.cpp
+        Figure_sources/FigureAbstractObject.cpp
         )
 
 target_include_directories(${PROJECT_NAME} PUBLIC Headers)
 target_include_directories(${PROJECT_NAME} PUBLIC Figure_sources)
+target_include_directories(${PROJECT_NAME} PUBLIC example)
 target_link_libraries(${PROJECT_NAME} CONAN_PKG::gtest)

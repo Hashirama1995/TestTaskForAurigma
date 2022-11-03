@@ -5,7 +5,7 @@ using namespace Object2D;
 
 /*********_Implementation BezierBurve*********/
 BezierBurve3::BezierBurve3(Bitmap& pic, Point2D p0, Point2D p1, Point2D p2, Point2D p3,int precision_, ColorInterface * clr)
-    :picture(pic), P0(p0), P1(p1), P2(p2), P3(p3), precision(precision_), color(clr)
+    :picture(pic), P0(p0), P1(p1), P2(p2), P3(p3), precision(precision_), color(clr), current_color(clr->getColor())
 {
     std::pair<unsigned int, unsigned int>sizePic = picture.getPictureSize();
     validatePoint(P0.x, P0.y, sizePic.first, sizePic.second);
@@ -14,10 +14,15 @@ BezierBurve3::BezierBurve3(Bitmap& pic, Point2D p0, Point2D p1, Point2D p2, Poin
     validatePoint(P3.x, P3.y, sizePic.first, sizePic.second);
 
 }
+BezierBurve3::~BezierBurve3()
+{
+    //delete color;
+    std::cout<<"delete Burve"<<std::endl;
+}
 
 void BezierBurve3::setColor(ColorInterface* color) 
 {
-
+    current_color = color->getColor() ;
 }
 
 Point2D BezierBurve3::calculatePoint(float step)
@@ -55,7 +60,8 @@ void BezierBurve3::rasterization()
 
 void BezierBurve3::putPixel(int x, int y)
 {
-    picture.putPixel(x,y,color);
+   // picture.putPixel(x,y,color); current_color
+   picture.putPixel(x,y,current_color);
 }
 
 
@@ -77,17 +83,60 @@ void BezierBurve3::shift(float dx, float dy)
 
 void BezierBurve3::zoom(float Sx, float Sy) 
 {
-    const float tempMatrix[3][3] = {{Sx,0,0},{0,Sy,0},{0,0,1}};
+    std::pair<unsigned int, unsigned int>sizePic = picture.getPictureSize();
+    const float tempMatrix[3][3] = {{abs(Sx), 0, 0},{0, abs(Sy), 0},{0, 0, 1}};
+
+    Point2D temp[4];
+
+    temp[0] = P0; temp[1] = P1; temp[2] = P2; temp[3] = P3;
 
     matrixMultiply(P0, tempMatrix);
     matrixMultiply(P1, tempMatrix);
     matrixMultiply(P2, tempMatrix);
-    matrixMultiply(P3, tempMatrix);
+    matrixMultiply(P3, tempMatrix); 
+
+    int x_min = 9999999, y_min = 9999999, x_max = -1, y_max = -1;
+    getEdges(x_min, y_min, x_max, y_max);
+
+    if (x_min < 0 || y_min < 0 || x_max > sizePic.first || y_max > sizePic.second)
+    {
+        P0 = temp[0]; P1 = temp[1]; P2 = temp[2]; P3 = temp[3];
+        std::cout<< "Object BezierBurve3: was not zoomed. Мultiplier is too high" <<std::endl;
+    }         
 }
 
 void BezierBurve3::rotate(float Fi) 
 {
-    // Беда
+    float radian = Fi/180.0f * M_PI;         
+    float sinF = sin(radian);
+    float cosF = cos(radian);
+    float DX = abs(P0.x + P3.x)/2 ;
+    float DY = abs(P0.y + P3.y)/2 ;
+
+    float resX0 = P0.x - DX;
+    float resY0 = P0.y - DY;
+    float resX1 = P1.x - DX;
+    float resY1 = P1.y - DY;
+    float resX2 = P2.x - DX;
+    float resY2 = P2.y - DY;
+    float resX3 = P3.x - DX;
+    float resY3 = P3.y - DY;
+
+    float tempMatrix[3][3] = {{cosF, sinF, 0}, {-sinF, cosF ,0}, {DX, DY, 1}};
+    
+    matrixMultiply(resX0,resY0,tempMatrix);
+    matrixMultiply(resX1,resY1,tempMatrix);
+    matrixMultiply(resX2,resY2,tempMatrix);   
+    matrixMultiply(resX3,resY3,tempMatrix);
+
+    P0.x = resX0;
+    P0.y = resY0;
+    P1.x = resX1;
+    P1.y = resY1;
+    P2.x = resX2;
+    P2.y = resY2;
+    P3.x = resX3;
+    P3.y = resY3;
 }
 
 
