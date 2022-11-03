@@ -10,10 +10,6 @@ int main()
 
     Builder builder;
     builder.createFile("simba",1024,1024, COLORS::RGB);
-    //std::shared_ptr<Point> point =      builder.createPoint(100,100, new RGBColor(100,100,100));
-    //std::shared_ptr<Line> line =        builder.createLine(200,200,400,400, new RGBColor(123,255,23));
-    //std::shared_ptr<BezierBurve3> burve = builder.createBezierBurve3(Point2D(250,250), Point2D(500,500),Point2D(800,800), Point2D(250,200),3, new RGBColor(255,2,123));
-    //std::shared_ptr<Ellipse> ellipse =  builder.createEllipse(300,300,200,300,360,new RGBColor(123,2,11));
     std::shared_ptr<Point> point =      builder.createPoint(100,100, color);
     color->setColor(123,255,23);
     std::shared_ptr<Line> line =        builder.createLine(200,200,400,400, color);
@@ -40,7 +36,7 @@ int main()
 
     if(builder.drawImage())
     {
-        std::cout<<"NICE!"<<std::endl;
+        std::cout<<"IMAGE CREATED!"<<std::endl;
     }
     return 0;
 }

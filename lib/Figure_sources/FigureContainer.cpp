@@ -10,12 +10,6 @@ ContainerFigure2D::ContainerFigure2D()
 ContainerFigure2D::~ContainerFigure2D()
 {
     std::cout<<"delete container"<<std::endl;
-    /*
-    for (std::list<Figure2D*>::iterator first = container.begin(); first != container.end(); ++first)
-    {
-        (*first)->~Figure2D();
-    }
-    std::cout<<"Delete container"<<std::endl;*/
 }
 
 Figure2D* ContainerFigure2D::add(Figure2D* item)
