@@ -5,7 +5,6 @@ project(testTask-lib VERSION 1.0.0 LANGUAGES CXX)
 include_directories("${CMAKE_SOURCE_DIR}/lib/Headers" "${PROJECT_NAME}/lib/Figure_sources")
 
 add_library(${PROJECT_NAME}	
-        Figure.cpp
         Headers/Figure.h
         Bitmap.cpp
         Headers/Bitmap.h
